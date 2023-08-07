@@ -1,0 +1,30 @@
+name: Build and Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v3
+    - name: Setup .NET 7
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build API
+      run: dotnet build EmployeeManagement/EmployeeManagement.csproj --no-restore
+    - name: Run unit tests
+      run: dotnet test EmployeeManagement.Tests/EmployeeManagement.Tests.csproj --logger "trx;LogFileName=test-results.trx"
+    - name: Generate unit test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Unit test results
+        path: "**/test-results.trx"                            
+        reporter: dotnet-trx
+        fail-on-error: true
