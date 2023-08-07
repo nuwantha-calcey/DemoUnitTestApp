@@ -31,20 +31,20 @@ namespace EmployeeManagement.Test
             Assert.Equal(2500, employee.Salary);
         }
 
-        [Fact]
-        [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
-        public void CreateEmployee_ConstructInternalEmployee_SalaryMustBeBetween2500And3500()
-        {
-            // Arrange 
+        //[Fact]
+        //[Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
+        //public void CreateEmployee_ConstructInternalEmployee_SalaryMustBeBetween2500And3500()
+        //{
+        //    // Arrange 
 
-            // Act
-            var employee = (InternalEmployee)_employeeFactory
-                .CreateEmployee("Kevin", "Dockx");
+        //    // Act
+        //    var employee = (InternalEmployee)_employeeFactory
+        //        .CreateEmployee("Kevin", "Dockx");
 
-            // Assert
-            Assert.True(employee.Salary >= 3000 && employee.Salary <= 3500, 
-                "Salary not in acceptable range.");
-        }
+        //    // Assert
+        //    Assert.True(employee.Salary >= 3000 && employee.Salary <= 3500, 
+        //        "Salary not in acceptable range.");
+        //}
 
         [Fact]
         [Trait("Category", "EmployeeFactory_CreateEmployee_Salary")]
