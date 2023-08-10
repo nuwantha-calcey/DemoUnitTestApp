@@ -9,7 +9,6 @@ using Xunit;
 // another comment
 // dasldlkaslkd
 
-//AnotherTestClass z
 
 // add test commit
 namespace EmployeeManagement.Test
