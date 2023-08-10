@@ -11,8 +11,11 @@ on:
 
 jobs:
   build-and-test:
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false || 
-        github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: |
+      github.event_name == 'pull_request' && github.event.pull_request.draft == false || 
+      github.event_name == 'pull_request' && github.event.pull_request.merged == true ||
+      github.event_name == 'push' && github.ref == 'refs/heads/main'
+      github.event_name == 'push' && startsWith(github.ref, 'refs/heads/releases/')
 
     runs-on: ubuntu-latest
 
@@ -29,7 +32,3 @@ jobs:
       run: dotnet build EmployeeManagement/EmployeeManagement.csproj --no-restore
     - name: Run unit tests
       run: dotnet test EmployeeManagement.Test/EmployeeManagement.Test.csproj --logger "trx;LogFileName=test-results.trx"
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-      run: echo ${{ toJSON(github) }}
