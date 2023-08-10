@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   pull_request:
-    types: [ready_for_review, closed]
+    types: [ready_for_review, opened, closed]
 
   push:
     branches:
