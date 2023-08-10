@@ -5,6 +5,7 @@ using Xunit;
 
 
 // added test comment
+// another comment
 namespace EmployeeManagement.Test
 {
     public class ServiceCollectionTests
