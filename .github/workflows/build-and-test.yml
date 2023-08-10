@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   pull_request:
-    types: [opened, closed]
+    types: [ready_for_review, closed]
 
   push:
     branches:
@@ -12,8 +12,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
-    if: (github.event.action == 'opened' || (github.event.action == 'closed' && github.event.pull_request.merged == true))
 
     permissions: 
       id-token: write
