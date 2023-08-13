@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   pull_request:
-    types: [opened, reopened, closed, ready_for_review, ! converted_to_draft]
+    types: [opened, reopened, closed, ready_for_review]
 
   push:
     branches:
@@ -11,6 +11,9 @@ on:
 
 jobs:
   build-and-test:
+    if: | 
+      github.event_name == 'pull_request' && github.event.pull_request.draft == false || 
+      github.event_name == 'pull_request' && github.event.pull_request.merged == true 
 
     runs-on: ubuntu-latest
 
