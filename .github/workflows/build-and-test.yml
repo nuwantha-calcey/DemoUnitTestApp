@@ -10,14 +10,22 @@ on:
       - 'releases/**'
 
 jobs:
+  dump_contexts_to_log:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
   check-if-conditions:
     runs-on: ubuntu-latest
     steps:
     - name: draft check
-      run: echo 'draft - ${{ github.event_name == 'pull_request' && !github.event.pull_request.draft }}'
+      run: echo 'draft - ${{ github.event_name == 'pull_request' && ! github.event.pull_request.draft }}'
   build-and-test:
     if: | 
-      github.event_name == 'pull_request' && github.event.pull_request.draft == false || 
+      github.event_name == 'pull_request' && ! github.event.pull_request.draft || 
       github.event_name == 'pull_request' && github.event.pull_request.merged == true 
 
     runs-on: ubuntu-latest
