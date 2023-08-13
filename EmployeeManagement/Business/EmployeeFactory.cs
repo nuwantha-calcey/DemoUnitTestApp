@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.DataAccess.Entities;
 
+// comment
 namespace EmployeeManagement.Business
 {
     /// <summary>
