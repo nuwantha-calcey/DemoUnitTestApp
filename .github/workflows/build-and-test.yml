@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: draft check
-      run: echo 'draft - ${{ github.event_name == 'pull_request' && ! github.event.pull_request.draft }}'
+      run: echo 'draft - ${{ github.event_name == 'pull_request' && github.event.action == 'ready_for_review' }}'
   build-and-test:
     if: | 
-      github.event_name == 'pull_request' && ! github.event.pull_request.draft || 
+      github.event_name == 'pull_request' && github.event.action == 'ready_for_review' || 
       github.event_name == 'pull_request' && github.event.pull_request.merged == true 
 
     runs-on: ubuntu-latest
