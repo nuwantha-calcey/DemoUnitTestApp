@@ -10,6 +10,11 @@ on:
       - 'releases/**'
 
 jobs:
+  check-if-conditions:
+    runs-on: ubuntu-latest
+    steps:
+    - name: draft check
+      run: echo 'draft - ${{ github.event_name == 'pull_request' && github.event.pull_request.draft == false }}'
   build-and-test:
     if: | 
       github.event_name == 'pull_request' && github.event.pull_request.draft == false || 
