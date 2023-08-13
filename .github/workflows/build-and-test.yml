@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   pull_request:
-    types: [opened, closed]
+    types: [opened, reopened, closed, ready_for_review]
 
   push:
     branches:
@@ -10,13 +10,25 @@ on:
       - 'releases/**'
 
 jobs:
-  build-and-test:
+  dump_contexts_to_log:
     runs-on: ubuntu-latest
+    steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
 
-    permissions: 
-      id-token: write
-      contents: read
-      checks: write
+  check-if-conditions:
+    runs-on: ubuntu-latest
+    steps:
+    - name: draft check
+      run: echo 'draft - ${{ github.event_name == 'pull_request' && github.event.action == 'ready_for_review' }}'
+  build-and-test:
+    if: | 
+      github.event_name == 'pull_request' && github.event.action == 'ready_for_review' || 
+      github.event_name == 'pull_request' && github.event.pull_request.merged == true 
+
+    runs-on: ubuntu-latest
 
     steps:
     - name: Code checkout
@@ -31,10 +43,3 @@ jobs:
       run: dotnet build EmployeeManagement/EmployeeManagement.csproj --no-restore
     - name: Run unit tests
       run: dotnet test EmployeeManagement.Test/EmployeeManagement.Test.csproj --logger "trx;LogFileName=test-results.trx"
-    - name: Generate unit test report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: Unit test results
-        path: "**/test-results.trx"                            
-        reporter: dotnet-trx
